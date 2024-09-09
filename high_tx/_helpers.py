@@ -27,49 +27,23 @@ def get_satoshis_from_txs(txs) -> float:
     return sat
 
 # return the higher txs from a list of txs
-# this will not work because is not possible to know what tx is the bigger in term of value transfered
-def get_higher_tx(txs: list) -> tuple :
+def get_higher_txs(txs: list, number_of_txs= 10) -> tuple :
+    hith_txs = [] # this will be [(sat, tx), ...]
 
-    # I define the value of the higher tx starting from zero
-    higher_tx_value = 0.0
-
-    # a variable to save the higher tx dict
-    higher_tx = False
-
-    # loop inside the txs list to find the highter tx
-    for tx in txs:
-
+    for tx in txs: 
         # sum all output value of the current tx
-        current_tx_sat = 0.0
-        for output in tx["out"]: # loop on every tx output
+        sat = 0.0
+        for output in tx["out"]:
             if output["spent"]:
-                current_tx_sat += output["value"] # add the value to the sat local variable
+                sat += output["value"]
 
-        # check if the current_tx_sat is higher that the higher_tx
-        if current_tx_sat > higher_tx_value:
-            higher_tx_value = current_tx_sat
-            higher_tx = tx
+        hith_txs.append((sat, tx)) # add a tuple (sat, tx)
 
-            # find the correct value of the tx 
-            # value of tx = output - fees
-    
-    return higher_tx_value, higher_tx
+    # order the tx by value, from hight to low
+    hith_txs.sort(reverse=True, key=lambda x: x[0])
 
-# the the top n. tx from a txs list by satoshis value
-def get_higher_txs(txs: list, number_of_txs):
-    higher_txs = []
-    current_value = 0.0 # satoshis
+    return hith_txs[:number_of_txs]
 
-    for tx in txs:
-        for input in tx["output"]:
-            pass
-
-        """ se sommo tutti gli output ho il valore totale della transazione meno
-        commissioni. Gli output sono dei descrittori che indicano il valore di 
-        quanto viene trasferito, l'address dove viene trasferito
-        """
-
-    return higher_txs
 
 # convert a value in satoshis to a btc value
 def convert_satoshis_to_btc(satoshis: float):
@@ -109,7 +83,8 @@ def save_blocks_to_json_file(block_list, filename = "_blocks"):
 # save a list of tx like an object in a json file
 def save_txs_to_json_file(tx_list, limit = 0, filename = "_transactions"):
     """limit: if set like a integer > 0 for eg. 9 or 12 the function limits
-    the number of tx saved on the file by the specified number."""
+    the number of tx saved on the file by the specified number.
+    Default behavior is to save all txs."""
 
     if not tx_list:
         print("error: the tx list is void. Can't save nothing to the file")

@@ -41,7 +41,6 @@ class Transaction:
     weight: int
     fee: int
     relayed_by: str
-    lock_time: int
     tx_index: int
     double_spend: bool
     time: int
@@ -49,3 +48,9 @@ class Transaction:
     block_height: int
     inputs: list[Input] # all tx inputs
     out: list[Output]
+
+    """ if is 0 the tx can be included in any block. 
+        if is a number < 500.000.000 will be included not before this block number
+        if the value is > 500.000.000 will be parset like a epoch time and included in a block with
+        a 'median past time' (MPT) > than the lock time."""
+    lock_time: int
