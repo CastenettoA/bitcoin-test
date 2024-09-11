@@ -28,7 +28,7 @@ def get_satoshis_from_txs(txs) -> float:
 
 # return the higher txs from a list of txs
 def get_higher_txs(txs: list, number_of_txs= 10) -> tuple :
-    hith_txs = [] # this will be [(sat, tx), ...]
+    high_txs = [] # this will be [(sat, tx), ...]
 
     for tx in txs: 
         # sum all output value of the current tx
@@ -37,13 +37,33 @@ def get_higher_txs(txs: list, number_of_txs= 10) -> tuple :
             if output["spent"]:
                 sat += output["value"]
 
-        hith_txs.append((sat, tx)) # add a tuple (sat, tx)
+        high_txs.append((sat, tx)) # add a tuple (sat, tx)
 
     # order the tx by value, from hight to low
-    hith_txs.sort(reverse=True, key=lambda x: x[0])
+    high_txs.sort(reverse=True, key=lambda x: x[0])
 
-    return hith_txs[:number_of_txs]
+    return high_txs[:number_of_txs]
 
+# return the higher txs from block number
+def get_higher_txs_from_block(block_hash: str, n_tx: int):
+    block_data = get_block_data(block_hash)
+
+    if not block_data:
+        print("error: block data is void")
+
+    high_txs = get_higher_txs(block_data["tx"], n_tx)
+
+    if not high_txs:
+        print("error: error retriving high_txs")
+
+    return high_txs
+
+# get a list of dict of tx from a txs list of tuple
+def get_txs_from_tx_tuple(txs_tuple):
+    txs_formatted = []
+    for tx_tuple in txs_tuple:
+        txs_formatted.append(tx_tuple[1])
+    return txs_formatted
 
 # convert a value in satoshis to a btc value
 def convert_satoshis_to_btc(satoshis: float):
@@ -58,7 +78,7 @@ def get_block_data(block_hash: str|int):
         return block  
     else:
         return False
-    
+
 # get the number of tx and the total satoshi value of a single block
 def get_txs_number_and_satoshi_value(block_hash: str):
     block = get_block_data(block_hash)

@@ -1,26 +1,29 @@
 # Higher tx
+Find the higher tx in a block by value
 
-    - sprint 1 ---> find the higher tx in a block by value
-Glossario
-tx = transazione
-txi = input di txssssasas
+Per attivare ambiente virtuale dare il comando dentro la cartella /high_tx: 'source venv/bin/activate'
+
 
 # Funzionalità del programma
-Il programma permette da cercare tramite linea di comando le n. transazioni di valore più grande all'interno di un blocco.
+Il programma mette a disposizione un endpoint flask per ricercare le n. transazioni di valore più grande all'interno di un blocco.
 
-Utilizzo:
+Indirizzo di default = http://127.0.0.1:5000/high_txs_from_block_hash
+Esempio di utilizzo =  http://127.0.0.1:5000/high_txs_from_block_hash?block_hash=00000000000000000000fc7e5d1214672f23fc61b88e15617b16662af75bce98
 
-python3 main.py get-high-tx [block_hash] [number_of_transaction_to_return]
-python3 main.py get-high-tx 00000000000000000000fc7e5d1214672f23fc61b88e15617b16662af75bce98 20
+# Come eseguire il programma
+1. attivare ambiente virtuale
+   - Per attivare ambiente virtuale dare il comando dentro la cartella /high_tx: 'source venv/bin/activate'
+2. attivare il server
+   - dare il comando: 'python3 server.py
+3. utilizzare l'endpoint e attendere il risultato
+   - comando di esempio:
+    http://127.0.0.1:5000/high_txs_from_block_hash?block_hash=00000000000000000000fc7e5d1214672f23fc61b88e15617b16662af75bce98
 
-The default 'number_of_transaction_to_return' is 10 and there is not a default block_hash parameter.
-
-
-
-
-
-
-
+    L'api restutuisce un array di oggetti di transazione in formato json. Queste sono le n. transazioni con valore più alto all'interno del blocco
+4. visualizzare i dati graficamente (modificare il file index.html parte 1)
+    - è possibile visualizzare i dati copiando questo oggetto json e incollandolo al posto dell'array di oggetti presende nel file index.html chiamato 'transactions'.
+5. salvare il file index.html e aprirlo nel browser
+6. le transazioni saranno visualizzate graficamente e ordinate per valore
 
 
 

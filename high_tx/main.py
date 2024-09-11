@@ -2,7 +2,7 @@
 with the bigger Satoshis value on a specific block
 and display (or print) his value on the stdo"""
 
-from _helpers import convert_satoshis_to_btc, get_block_data, get_higher_txs, save_txs_to_json_file
+from _helpers import convert_satoshis_to_btc, get_block_data, get_higher_txs, get_txs_from_tx_tuple, save_txs_to_json_file
 
 if __name__ == "__main__":
 
@@ -12,11 +12,7 @@ if __name__ == "__main__":
     block_data = get_block_data(block_hash)
 
     txs = get_higher_txs(block_data["tx"])
-
-    # convert tuple (sat, tx) to dict {tx}
-    txs_formatted = []
-    for tx_tuple in txs:
-        txs_formatted.append(tx_tuple[1])
+    txs_formatted = get_txs_from_tx_tuple(txs)
 
     print("saving txs on json file...")
     save_txs_to_json_file(txs_formatted)
